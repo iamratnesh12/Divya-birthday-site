@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terminal Login</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #000;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #terminal {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px;
+      background: #111;
+      box-shadow: 0 0 10px #33ff33;
+      overflow-y: auto;
+    }
+    .line {
+      margin: 5px 0;
+    }
+    .input-line {
+      display: flex;
+    }
+    .input-line span {
+      white-space: pre;
+    }
+    input {
+      background: transparent;
+      border: none;
+      color: #33ff33;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div class="line">Welcome to Secure Terminal</div>
+    <div class="line">Type <b>password</b> to continue or <b>home</b> to go back.</div>
+    <div class="input-line">
+      <span>&gt; </span>
+      <input type="text" id="terminal-input" autofocus />
+    </div>
+  </div>
+
+  <script>
+    const terminal = document.getElementById('terminal');
+    const input = document.getElementById('terminal-input');
+
+    function appendLine(text) {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = text;
+      terminal.insertBefore(line, terminal.lastElementChild);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function handleCommand(cmd) {
+      const command = cmd.toLowerCase();
+      if (command === 'home') {
+        appendLine('Redirecting to home...');
+        setTimeout(() => window.location.href = 'index.html', 1000);
+      } else if (command === 'password') {
+        const pass = prompt('Enter password:');
+        if (pass === '041119') {
+          appendLine('Access granted. Redirecting...');
+          setTimeout(() => window.location.href = 'happy-birthday-main\index.html', 1000);
+        } else {
+          appendLine('Access denied. Wrong password.');
+        }
+      } else {
+        appendLine(`Unknown command: ${cmd}`);
+      }
+    }
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const cmd = input.value.trim();
+        appendLine(`> ${cmd}`);
+        handleCommand(cmd);
+        input.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
